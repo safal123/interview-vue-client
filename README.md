@@ -1,5 +1,31 @@
-# Vue 3 + TypeScript + Vite
+# Frontend Application
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+This is the frontend application for the project, which runs on `localhost:3000` and communicates with an API powered by Laravel Sanctum on `localhost:8000`.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Requirements
+
+- **Node.js** (v14.x or higher)
+- **NPM** (v6.x or higher)
+- The backend API should be running on `localhost:8000`, powered by Laravel Sanctum.
+
+## Getting Started
+
+### 1. Clone the Repository
+
+To clone the repository, run the following command:
+
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+
+```
+
+### 2. After cloning, navigate to the project directory:
+```bash
+cd your-repo-name
+npm install
+```
+
+Visit the localhost:300 url after setting up the api.
+You can find the backend repository here: [Backend Repository](https://github.com/safal123/laravel-interview-api)
+
+Follow the instructions to setup the api.

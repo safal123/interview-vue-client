@@ -40,7 +40,6 @@ export default function useCustomers() {
             if (!customer.name || !customer.reference || !customer.startDate) {
                 return Promise.reject("All fields are required");
             }
-            // TODO: Frontend proper validation
             const response = await axios.post('/api/customers', {
                 name: customer.name,
                 reference: customer.reference,
