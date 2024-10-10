@@ -1,5 +1,7 @@
 <script setup></script>
 
 <template>
-  <h1 class="bg-red-900">Home Page</h1>
+  <div class="p-16">
+    <h1>Welcome to Slipstream CRM</h1>
+  </div>
 </template>

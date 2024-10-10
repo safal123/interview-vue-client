@@ -1,7 +1,29 @@
 <script setup>
+import { ref } from 'vue'
+import Sidebar from '../components/sidebar.vue'
+import CustomersTable from '../components/customers-table.vue'
+import { onMounted } from 'vue'
+import useCustomers from '../composables/useCustomers'
 
+const { fetchCustomers, customers } = useCustomers()
+// const customers = ref([])
+
+onMounted(() => {
+  fetchCustomers().then((data) => {
+    customers.value = data.data
+  })
+})
 </script>
 
 <template>
-    <h1 class="bg-red-900">Customers Page</h1>
+  <div class="flex">
+    <aside class="w-64 hidden lg:flex">
+      <div class="min-h-screen bg-gray-100">
+        <Sidebar />
+      </div>
+    </aside>
+    <main class="w-full flex-1">
+      <CustomersTable :customers="customers" />
+    </main>
+  </div>
 </template>

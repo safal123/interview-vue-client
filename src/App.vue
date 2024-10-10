@@ -32,9 +32,6 @@ onMounted(() => {
       </div>
     </nav>
     <main>
-      <pre>
-        {{ currentUser }}
-      </pre>
       <RouterView />
     </main>
   </div>
