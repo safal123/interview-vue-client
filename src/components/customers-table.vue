@@ -53,7 +53,7 @@ const handleCustomerSave = async () => {
   try {
     await createCustomer(formData.value)
     resetFormData()
-    await refetchCustomers()
+    refetchCustomers()
     toggleModal('isModalOpen', false)
   } catch (e) {
     console.log(error)
@@ -82,15 +82,26 @@ const openModalForDelete = (customer) => {
 }
 
 const handleCustomerEdit = async () => {
-  await updateCustomer(formData.value)
-  await refetchCustomers()
-  toggleModal('isEditModalOpen', false)
+  try {
+    await updateCustomer(formData.value)
+    resetFormData()
+    refetchCustomers()
+    toggleModal('isEditModalOpen', false)
+  } catch (e) {
+    error.value = e || 'An error occurred'
+    console.log(e)
+  }
 }
 
 const handleCustomerDelete = async () => {
-  await deleteCustomer(selectedCustomer.value.id)
-  await refetchCustomers()
-  toggleModal('isDeleteModalOpen', false)
+  try {
+    await deleteCustomer(selectedCustomer.value.id)
+    toggleModal('isDeleteModalOpen', false)
+    refetchCustomers()
+  } catch (e) {
+    error.value = e || 'An error occurred'
+    console.log(e)
+  }
 }
 
 const resetSearch = async () => {
@@ -212,6 +223,7 @@ const applySearch = async () => {
       @save="handleCustomerEdit"
     >
       <CreateCustomerForm
+        :errorMessage="error"
         v-if="modalState.isEditModalOpen"
         :formData="formData"
       />

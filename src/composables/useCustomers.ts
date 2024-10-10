@@ -67,6 +67,7 @@ export default function useCustomers() {
     }) => {
         try {
             if (!customer.name || !customer.reference || !customer.startDate) {
+                console.log(customer);
                 return Promise.reject("Required fields are missing");
             }
             const response = await axios.put(`/api/customers/${customer.id}`, {
@@ -76,11 +77,13 @@ export default function useCustomers() {
                 category: customer.category,
                 description: customer.description,
             });
-            customersState.customers = response.data.data;
+            // Update the customer in the list
+            const index = customersState.customers.findIndex((c) => c.id === customer.id);
+            customersState.customers[index] = response.data.data;
             return response.data;
         }
         catch (error: Error | any) {
-            return Promise.reject(error.response.data.errors || "Something went wrong");
+            return Promise.reject(error.response.data.errors.message || "Something went wrong");
         }
     }
 

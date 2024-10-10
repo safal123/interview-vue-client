@@ -7,11 +7,7 @@ const props = defineProps({
   errorMessage: {
     type: String,
     required: false,
-  },
-  isEditModalOpen: {
-    type: Boolean,
-    required: true,
-  },
+  }
 })
 </script>
 
