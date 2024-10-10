@@ -1,4 +1,23 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import useAuthentication from './composables/useAuthentication'
+
+const { isLoggedIn, signIn, fetchUser, currentUser } = useAuthentication()
+
+// Onmount check if user is logged in
+// This is a direct login for demo purposes
+// WARNING: Do not do this in production.
+onMounted(() => {
+  if (!isLoggedIn.value) {
+    // User with this credentials is already created in the database
+    signIn({
+      email: 'demo@slipstream.com',
+      password: 'password',
+    })
+  }
+  fetchUser()
+})
+</script>
 
 <template>
   <div class="container mx-auto min-h-screen">
@@ -13,6 +32,9 @@
       </div>
     </nav>
     <main>
+      <pre>
+        {{ currentUser }}
+      </pre>
       <RouterView />
     </main>
   </div>
