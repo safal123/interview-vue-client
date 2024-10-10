@@ -15,14 +15,14 @@ This is the frontend application for the project, which runs on `localhost:3000`
 To clone the repository, run the following command:
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-
+git https://github.com/safal123/interview-vue-client.git
 ```
 
 ### 2. After cloning, navigate to the project directory:
 ```bash
-cd your-repo-name
+cd interview-client
 npm install
+npm run dev
 ```
 
 Visit the localhost:300 url after setting up the api.
