@@ -1,20 +1,19 @@
 <script setup lang="ts"></script>
 
 <template>
-  <h1 class="bg-red-900">Hello world</h1>
+  <div class="container mx-auto min-h-screen">
+    <nav>
+      <div class="py-6 px-4 sm:px-6 lg:px-8 border-b bg-gray-100">
+        <div class="flex justify-between items-center">
+          <RouterLink to="/" class="text-gray-800"> Home </RouterLink>
+          <RouterLink to="/customers" class="text-gray-800">
+            Customers
+          </RouterLink>
+        </div>
+      </div>
+    </nav>
+    <main>
+      <RouterView />
+    </main>
+  </div>
 </template>
-
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
