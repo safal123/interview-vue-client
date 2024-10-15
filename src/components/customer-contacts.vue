@@ -31,8 +31,8 @@ const openEditModal = (contact) => {
       <tbody class="bg-gray-100">
         <template v-if="contacts && contacts.length > 0">
           <tr v-for="contact in contacts" :key="contact.id" class="border-b">
-            <td class="px-4 py-2">{{ contact.first_name }}</td>
-            <td class="px-4 py-2">{{ contact.last_name }}</td>
+            <td class="px-4 py-2">{{ contact.firstName }}</td>
+            <td class="px-4 py-2">{{ contact.lastName }}</td>
             <td class="px-4 py-2">
               <div class="flex space-x-2">
                 <button
