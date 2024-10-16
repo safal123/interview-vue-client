@@ -17,7 +17,7 @@ const props = defineProps({
     <div
       class="bg-white rounded-lg shadow-lg w-full max-w-5xl max-h-[90vh] overflow-y-auto"
     >
-      <slot></slot>
+    <slot></slot>
     </div>
   </div>
 </template>

@@ -72,53 +72,62 @@ const applySearch = async () => {
 </script>
 
 <template>
-  <div class="px-12 py-6">
+  <div class="px-4 py-6 md:px-12">
     <div class="flex justify-between items-center">
       <h1 class="text-2xl font-bold text-blue-600">Customers</h1>
       <button
         @click="openModalForCreate"
-        class="bg-blue-500 text-white px-4 py-2 rounded"
+        class="bg-blue-500 text-white px-4 py-2 rounded mt-4 md:mt-0"
       >
         Create
       </button>
     </div>
-    <div>
-      <div class="flex items-center space-x-4 mt-4">
-        <input
-          type="text"
-          v-model="search"
-          class="w-1/2 px-4 py-2 border rounded-lg focus:outline-none focus:ring"
-          placeholder="Search"
-        />
-        <div class="w-1/3 flex items-center space-x-4">
-          <label for="category">Category</label>
-          <select
-            v-model="searchCategory"
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring"
-          >
-            <option value="all">All</option>
-            <option value="Gold">Gold</option>
-            <option value="Silver">Silver</option>
-            <option value="Bronze">Bronze</option>
-          </select>
-        </div>
-        <div class="w-1/3 flex justify-end space-x-4">
-          <button
-            @click="applySearch"
-            class="bg-blue-500 text-white px-4 py-2 rounded"
-          >
-            Apply
-          </button>
-          <button
-            @click="resetSearch"
-            class="bg-gray-500 text-white px-4 py-2 rounded"
-          >
-            Clear
-          </button>
-        </div>
-      </div>
 
-      <table class="w-full mt-4 border">
+    <!-- Search and Filter Section -->
+    <div
+      class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 mt-4"
+    >
+      <input
+        type="text"
+        v-model="search"
+        class="w-full md:w-1/2 px-4 py-2 border rounded-lg focus:outline-none focus:ring"
+        placeholder="Search"
+      />
+      <div
+        class="w-full md:w-1/3 flex flex-col md:flex-row items-center md:space-x-4"
+      >
+        <label for="category" class="hidden md:block">Category</label>
+        <select
+          v-model="searchCategory"
+          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring"
+        >
+          <option value="all">All</option>
+          <option value="Gold">Gold</option>
+          <option value="Silver">Silver</option>
+          <option value="Bronze">Bronze</option>
+        </select>
+      </div>
+      <div
+        class="w-full md:w-1/3 flex justify-between space-x-2 md:justify-end"
+      >
+        <button
+          @click="applySearch"
+          class="bg-blue-500 text-white px-4 py-2 rounded w-full md:w-auto"
+        >
+          Apply
+        </button>
+        <button
+          @click="resetSearch"
+          class="bg-gray-500 text-white px-4 py-2 rounded w-full md:w-auto"
+        >
+          Clear
+        </button>
+      </div>
+    </div>
+
+    <!-- Table Section -->
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full min-w-max border">
         <thead class="bg-gray-200">
           <tr>
             <th class="text-left px-4 py-2">Name</th>
@@ -155,6 +164,7 @@ const applySearch = async () => {
       </table>
     </div>
 
+    <!-- Modals -->
     <Modal :isOpen="modalState.isModalOpen">
       <CustomerForm @close="toggleModal('isModalOpen', false)" mode="create" />
     </Modal>
