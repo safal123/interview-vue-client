@@ -1,7 +1,7 @@
 <script setup>
 import { defineProps, ref } from 'vue'
 import Modal from './modal.vue'
-import CreateContactForm from './create-contact-form.vue'
+import ContactForm from './contact-form.vue'
 const props = defineProps({
   customer: {
     type: Object,
@@ -10,16 +10,27 @@ const props = defineProps({
 })
 
 const contacts = props.customer.contacts
+const selectedContact = ref(null)
 
-const isEditModalOpen = ref(false)
+const isModelOpen = ref(false)
 
-const openEditModal = (contact) => {
-  isEditModalOpen.value = true
+const openModel = (contact) => {
+  selectedContact.value = contact
+  isModelOpen.value = true
 }
 </script>
 
 <template>
-  <div>
+  <div class="overflow-y-auto">
+    <div class="flex justify-between items-center border-b pb-2 px-2">
+      <h2 class="text-xl font-bold">Contacts</h2>
+      <button
+        @click="openModel"
+        class="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+      >
+        Create
+      </button>
+    </div>
     <table class="w-full mt-4 border">
       <thead class="bg-gray-200">
         <tr>
@@ -36,7 +47,7 @@ const openEditModal = (contact) => {
             <td class="px-4 py-2">
               <div class="flex space-x-2">
                 <button
-                  @click="openEditModal(contact)"
+                  @click="openModel(contact)"
                   class="bg-blue-500 text-white px-4 py-2 rounded"
                 >
                   Edit
@@ -55,12 +66,12 @@ const openEditModal = (contact) => {
         </template>
       </tbody>
     </table>
-    <Modal
-      @close="isEditModalOpen = false"
-      :isOpen="isEditModalOpen"
-      title="Contacts - Details"
-    >
-      <CreateContactForm />
+    <Modal @close="isModelOpen = false" :isOpen="isModelOpen">
+      <ContactForm
+        :contact="selectedContact"
+        @close="isModelOpen = false"
+        :mode="'edit'"
+      />
     </Modal>
   </div>
 </template>

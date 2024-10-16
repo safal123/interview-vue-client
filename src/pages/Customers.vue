@@ -6,12 +6,9 @@ import { onMounted } from 'vue'
 import useCustomers from '../composables/useCustomers'
 
 const { fetchCustomers, customers } = useCustomers()
-// const customers = ref([])
 
 onMounted(() => {
-  fetchCustomers().then((data) => {
-    customers.value = data.data
-  })
+  fetchCustomers()
 })
 </script>
 

@@ -37,9 +37,6 @@ export default function useCustomers() {
         description: string;
     }) => {
         try {
-            if (!customer.name || !customer.reference || !customer.startDate) {
-                return Promise.reject("All fields are required");
-            }
             const response = await axios.post('/api/customers', {
                 name: customer.name,
                 reference: customer.reference,
@@ -48,7 +45,7 @@ export default function useCustomers() {
                 description: customer.description,
             });
             // Add the new customer to the list
-            customersState.customers.push(response.data.data);
+            await fetchCustomers({});
             return response.data;
         } catch (error: Error | any) {
             console.log(error);
@@ -91,6 +88,7 @@ export default function useCustomers() {
             const response = await axios.delete(`/api/customers/${customerId}`);
             // remove the deleted customer from the list
             customersState.customers = customersState.customers.filter((customer) => customer.id !== customerId);
+            fetchCustomers({});
             return response.data;
         } catch (error: Error | any) {
             return Promise.reject(error.response.data.errors || "Something went wrong");

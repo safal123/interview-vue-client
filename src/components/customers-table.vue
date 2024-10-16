@@ -1,7 +1,7 @@
 <script setup>
 import { ref, defineEmits, watch } from 'vue'
 import Modal from './modal.vue'
-import CreateCustomerForm from './create-customer-form.vue'
+import CustomerForm from './customer-form.vue'
 import CustomerContacts from './customer-contacts.vue'
 import ConfirmModal from './confirm-modal.vue'
 import useCustomers from '../composables/useCustomers'
@@ -14,14 +14,6 @@ const props = defineProps({
 })
 const emit = defineEmits(['refetchCustomers'])
 const refetchCustomers = () => emit('refetchCustomers')
-
-const formData = ref({
-  name: '',
-  reference: '',
-  category: '',
-  startDate: '',
-  description: '',
-})
 
 const search = ref('')
 const searchCategory = ref('')
@@ -36,61 +28,21 @@ const modalState = ref({
 const selectedCustomer = ref(null)
 
 const toggleModal = (key, value) => (modalState.value[key] = value)
-const resetFormData = () => {
-  formData.value = {
-    name: '',
-    reference: '',
-    category: '',
-    startDate: '',
-    description: '',
-  }
-}
-
 const { fetchCustomers, createCustomer, updateCustomer, deleteCustomer } =
   useCustomers()
 
-const handleCustomerSave = async () => {
-  try {
-    await createCustomer(formData.value)
-    resetFormData()
-    refetchCustomers()
-    toggleModal('isModalOpen', false)
-  } catch (e) {
-    console.log(error)
-    error.value = e || 'An error occurred'
-  }
-}
-
-watch(formData, () => {
-  error.value = null
-})
-
 const openModalForCreate = () => {
-  resetFormData()
   toggleModal('isModalOpen', true)
 }
 
 const openModalForEdit = (customer) => {
   selectedCustomer.value = customer
-  formData.value = { ...customer }
   toggleModal('isEditModalOpen', true)
 }
 
 const openModalForDelete = (customer) => {
   selectedCustomer.value = customer
   toggleModal('isDeleteModalOpen', true)
-}
-
-const handleCustomerEdit = async () => {
-  try {
-    await updateCustomer(formData.value)
-    resetFormData()
-    refetchCustomers()
-    toggleModal('isEditModalOpen', false)
-  } catch (e) {
-    error.value = e || 'An error occurred'
-    console.log(e)
-  }
 }
 
 const handleCustomerDelete = async () => {
@@ -203,31 +155,19 @@ const applySearch = async () => {
       </table>
     </div>
 
-    <Modal
-      :isOpen="modalState.isModalOpen"
-      title="Customers - Create"
-      @close="toggleModal('isModalOpen', false)"
-      @save="handleCustomerSave"
-    >
-      <CreateCustomerForm
-        :errorMessage="error"
-        v-if="modalState.isModalOpen"
-        :formData="formData"
-      />
+    <Modal :isOpen="modalState.isModalOpen">
+      <CustomerForm @close="toggleModal('isModalOpen', false)" mode="create" />
     </Modal>
 
-    <Modal
-      :isOpen="modalState.isEditModalOpen"
-      title="Customers - Edit"
-      @close="toggleModal('isEditModalOpen', false)"
-      @save="handleCustomerEdit"
-    >
-      <CreateCustomerForm
-        :errorMessage="error"
-        v-if="modalState.isEditModalOpen"
-        :formData="formData"
+    <Modal :isOpen="modalState.isEditModalOpen">
+      <CustomerForm
+        @close="toggleModal('isEditModalOpen', false)"
+        :customer="selectedCustomer"
+        mode="edit"
       />
-      <CustomerContacts :customer="formData" />
+      <div class="p-4">
+        <CustomerContacts :customer="selectedCustomer" />
+      </div>
     </Modal>
 
     <ConfirmModal
