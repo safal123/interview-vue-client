@@ -11,9 +11,13 @@ export default function useCustomers() {
     const fetchCustomers = async (query: {
         search?: string | null,
         category?: string | null,
+        page?: number | null,
     }) => {
         try {
             let url = `/api/customers?include=contacts`
+            if (query && query.page) {
+                url += `&page=${query.page}`
+            }
             if (query && query.search) {
                 url += `&search=${query.search}`
             }
@@ -22,7 +26,7 @@ export default function useCustomers() {
             }
 
             const response = await axios.get(url);
-            customersState.customers = response.data.data;
+            customersState.customers = response.data;
             return response.data;
         } catch (error: Error | any) {
             return Promise.reject(error.response.data.errors || "Something went wrong");
@@ -73,9 +77,7 @@ export default function useCustomers() {
                 category: customer.category,
                 description: customer.description,
             });
-            // Update the customer in the list
-            const index = customersState.customers.findIndex((c) => c.id === customer.id);
-            customersState.customers[index] = response.data.data;
+            fetchCustomers({});
             return response.data;
         }
         catch (error: Error | any) {
@@ -86,8 +88,6 @@ export default function useCustomers() {
     const deleteCustomer = async (customerId: number) => {
         try {
             const response = await axios.delete(`/api/customers/${customerId}`);
-            // remove the deleted customer from the list
-            customersState.customers = customersState.customers.filter((customer) => customer.id !== customerId);
             fetchCustomers({});
             return response.data;
         } catch (error: Error | any) {
