@@ -4,6 +4,7 @@ import Modal from './modal.vue'
 import CustomerForm from './customer-form.vue'
 import CustomerContacts from './customer-contacts.vue'
 import ConfirmModal from './confirm-modal.vue'
+import { TailwindPagination } from 'laravel-vue-pagination'
 import useCustomers from '../composables/useCustomers'
 
 const props = defineProps({
@@ -12,8 +13,8 @@ const props = defineProps({
     required: true,
   },
 })
-const emit = defineEmits(['refetchCustomers'])
-const refetchCustomers = () => emit('refetchCustomers')
+const { fetchCustomers, createCustomer, updateCustomer, deleteCustomer } =
+  useCustomers()
 
 const search = ref('')
 const searchCategory = ref('')
@@ -25,11 +26,16 @@ const modalState = ref({
   isDeleteModalOpen: false,
 })
 
-const selectedCustomer = ref(null)
+const handlePageChange = (page) => {
+  fetchCustomers({
+    page,
+    search: search.value,
+    category: searchCategory.value,
+  })
+}
 
+const selectedCustomer = ref(null)
 const toggleModal = (key, value) => (modalState.value[key] = value)
-const { fetchCustomers, createCustomer, updateCustomer, deleteCustomer } =
-  useCustomers()
 
 const openModalForCreate = () => {
   toggleModal('isModalOpen', true)
@@ -49,7 +55,6 @@ const handleCustomerDelete = async () => {
   try {
     await deleteCustomer(selectedCustomer.value.id)
     toggleModal('isDeleteModalOpen', false)
-    refetchCustomers()
   } catch (e) {
     error.value = e || 'An error occurred'
     console.log(e)
@@ -67,7 +72,6 @@ const applySearch = async () => {
     search: search.value,
     category: searchCategory.value,
   })
-  await refetchCustomers()
 }
 </script>
 
@@ -138,7 +142,11 @@ const applySearch = async () => {
           </tr>
         </thead>
         <tbody class="bg-gray-100">
-          <tr v-for="customer in customers" :key="customer.id" class="border-b">
+          <tr
+            v-for="customer in customers.data"
+            :key="customer.id"
+            class="border-b"
+          >
             <td class="px-4 py-2">{{ customer.name }}</td>
             <td class="px-4 py-2">{{ customer.reference }}</td>
             <td class="px-4 py-2">{{ customer.category }}</td>
@@ -162,6 +170,11 @@ const applySearch = async () => {
           </tr>
         </tbody>
       </table>
+      <TailwindPagination
+        :data="customers"
+        class="mt-4"
+        @pagination-change-page="handlePageChange"
+      />
     </div>
 
     <!-- Modals -->
